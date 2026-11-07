@@ -1,0 +1,11 @@
+flowchart TD
+    IR[IR metadata: emitter on/off per frame] --> PAIR{lit + ambient frame pair}
+    IRC[IR camera] --> PAIR
+    PAIR -->|lit frame| DET[Face detect + gates]
+    DET --> ARC[ArcFace on lit - ambient]
+    ARC --> MATCH{Match against user's prints?}
+    MATCH -->|yes| LIVE[Liveness votes]
+    RGB[RGB camera] --> LIVENET[Visible-light liveness net]
+    LIVENET -->|vetoes print photo| SPOOF[Spoof vote]
+    LIVE -->|2 live votes| OK[PAM: unlock]
+    SPOOF -->|3 spoof votes| REJ[Reject with reason]
